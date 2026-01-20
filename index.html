@@ -93,10 +93,10 @@
             vertical-align: top;
         }
         .ttd-space {
-            height: 70px;
+            height: 80px; /* Jarak tanda tangan 3-4 enter */
         }
 
-        /* Style khusus LKPD */
+        /* Style khusus LKM */
         .lkpd-box {
             border: 1px solid black;
             padding: 10px;
@@ -380,14 +380,14 @@
         function generateStudentID(jenjang) {
             let karakteristik = "", kesiapan = "";
             if (jenjang === 'SD') {
-                karakteristik = "Fase operasional konkret. Siswa aktif bergerak, memiliki rasa ingin tahu tinggi, dan belajar efektif melalui pengalaman sensorik langsung.";
-                kesiapan = "Sebagian besar siswa membutuhkan bimbingan konkret dalam memahami konsep abstrak. Kesiapan belajar bervariasi dari tahap pengenalan hingga pemahaman dasar.";
+                karakteristik = "Fase operasional konkret. Murid aktif bergerak, memiliki rasa ingin tahu tinggi, dan belajar efektif melalui pengalaman sensorik langsung.";
+                kesiapan = "Sebagian besar murid membutuhkan bimbingan konkret dalam memahami konsep abstrak. Kesiapan belajar bervariasi dari tahap pengenalan hingga pemahaman dasar.";
             } else if (jenjang === 'SMP') {
-                karakteristik = "Fase transisi menuju berpikir abstrak. Siswa mulai kritis, emosi fluktuatif, dan orientasi sosial pada teman sebaya sangat kuat.";
-                kesiapan = "Siswa mampu melakukan tugas mandiri namun membutuhkan struktur (scaffolding). Minat belajar dipengaruhi oleh relevansi materi dengan kehidupan mereka.";
+                karakteristik = "Fase transisi menuju berpikir abstrak. Murid mulai kritis, emosi fluktuatif, dan orientasi sosial pada teman sebaya sangat kuat.";
+                kesiapan = "Murid mampu melakukan tugas mandiri namun membutuhkan struktur (scaffolding). Minat belajar dipengaruhi oleh relevansi materi dengan kehidupan mereka.";
             } else {
-                karakteristik = "Berpikir abstrak dan logis. Siswa mampu merencanakan masa depan, mandiri, dan memiliki preferensi gaya belajar yang spesifik.";
-                kesiapan = "Siswa memiliki kesiapan tinggi untuk kolaborasi kompleks dan pemecahan masalah (HOTS). Mampu melakukan regulasi diri dalam belajar.";
+                karakteristik = "Berpikir abstrak dan logis. Murid mampu merencanakan masa depan, mandiri, dan memiliki preferensi gaya belajar yang spesifik.";
+                kesiapan = "Murid memiliki kesiapan tinggi untuk kolaborasi kompleks dan pemecahan masalah (HOTS). Mampu melakukan regulasi diri dalam belajar.";
             }
             return { karakteristik, kesiapan };
         }
@@ -411,9 +411,9 @@
         function generateKKTP(materi) {
             return `
             <ul style="margin-left: 15px; list-style-type: disc;">
-                <li>Peserta didik mampu menjelaskan konsep ${materi} dengan bahasanya sendiri (Berkesadaran).</li>
-                <li>Peserta didik mampu menerapkan prinsip ${materi} dalam menyelesaikan masalah kontekstual (Bermakna).</li>
-                <li>Peserta didik menunjukkan antusiasme dan partisipasi aktif selama proses eksplorasi ${materi} (Menggembirakan).</li>
+                <li>Murid mampu menjelaskan konsep ${materi} dengan bahasanya sendiri (Berkesadaran).</li>
+                <li>Murid mampu menerapkan prinsip ${materi} dalam menyelesaikan masalah kontekstual (Bermakna).</li>
+                <li>Murid menunjukkan antusiasme dan partisipasi aktif selama proses eksplorasi ${materi} (Menggembirakan).</li>
             </ul>`;
         }
 
@@ -421,7 +421,20 @@
             return "Platform Quizizz/Kahoot untuk asesmen formatif, Video Youtube untuk apersepsi, dan Canva/Google Slides untuk presentasi hasil karya.";
         }
 
-        // --- NEW: LOGIKA AKTIVITAS BERJENJANG (TIDAK DUPLIKASI) ---
+        // --- NEW: Uraian Praktik Pedagogis ---
+        function getPedagogyDescription(model) {
+            const descriptions = {
+                "Inkuiri-Discovery Learning": "Pembelajaran yang menekankan pada proses penemuan konsep secara mandiri oleh murid melalui observasi, eksperimen, dan pembuktian untuk membangun pemahaman yang mendalam.",
+                "Project Based Learning (PjBL)": "Model pembelajaran berbasis proyek yang menuntut murid menghasilkan produk nyata melalui kegiatan eksplorasi, penilaian, interpretasi, sintesis, dan informasi.",
+                "Problem Based Learning (PBL)": "Pendekatan pembelajaran yang menghadapkan murid pada masalah autentik dan kompleks sebagai pemicu untuk melakukan investigasi dan inkuiri.",
+                "Game Based Learning": "Pemanfaatan dinamika permainan dalam proses pembelajaran untuk meningkatkan motivasi dan keterlibatan murid dalam memahami materi.",
+                "Station Learning": "Metode pembelajaran rotasi stasiun yang memberikan variasi aktivitas belajar (visual, auditori, kinestetik) dalam satu pertemuan untuk diferensiasi.",
+                "Teaching Factory (TeFa)": "Model pembelajaran berbasis produksi/jasa yang mengacu pada standar industri, dilaksanakan dalam suasana industri yang sesungguhnya."
+            };
+            return descriptions[model] || "Pendekatan pembelajaran aktif yang berpusat pada murid.";
+        }
+
+        // --- LOGIKA AKTIVITAS BERJENJANG ---
         function generateActivities(pedagogy, materi, meeting, total) {
             let focus = "";
             let kegiatanInti = "";
@@ -430,53 +443,53 @@
             if (total == 1) {
                 focus = "Siklus Penuh: Konsep hingga Refleksi";
                 tujuanPertemuan = "Memahami dan menerapkan konsep dasar secara langsung.";
-                if (pedagogy.includes("PjBL")) kegiatanInti = `Siswa dibentuk kelompok, menyepakati tema proyek singkat tentang ${materi}, menyusun jadwal cepat, dan memulai pembuatan rancangan awal proyek.`;
-                else if (pedagogy.includes("Problem")) kegiatanInti = `Siswa mengidentifikasi masalah pada studi kasus ${materi}, berdiskusi mencari akar masalah, dan mempresentasikan solusi awal.`;
-                else kegiatanInti = `Siswa melakukan eksplorasi konsep ${materi} melalui literasi, diskusi kelompok untuk pendalaman, dan mengerjakan lembar kerja pemahaman.`;
+                if (pedagogy.includes("PjBL")) kegiatanInti = `Murid dibentuk kelompok, menyepakati tema proyek singkat tentang ${materi}, menyusun jadwal cepat, dan memulai pembuatan rancangan awal proyek.`;
+                else if (pedagogy.includes("Problem")) kegiatanInti = `Murid mengidentifikasi masalah pada studi kasus ${materi}, berdiskusi mencari akar masalah, dan mempresentasikan solusi awal.`;
+                else kegiatanInti = `Murid melakukan eksplorasi konsep ${materi} melalui literasi, diskusi kelompok untuk pendalaman, dan mengerjakan lembar kerja pemahaman.`;
             } 
             else if (meeting == 1) {
                 focus = "Pengenalan Masalah & Konsep Dasar";
                 tujuanPertemuan = "Membangun pemahaman awal dan ketertarikan pada topik.";
-                if (pedagogy.includes("PjBL")) kegiatanInti = `Siswa diperkenalkan dengan pertanyaan esensial terkait ${materi}. Siswa membentuk kelompok dan menyusun <strong>Perencanaan Proyek</strong> (jadwal dan alat bahan).`;
-                else if (pedagogy.includes("Problem")) kegiatanInti = `Siswa melakukan <strong>Orientasi Masalah</strong>. Guru menyajikan fenomena tentang ${materi}, siswa merumuskan pertanyaan masalah yang akan diselesaikan.`;
-                else kegiatanInti = `Siswa melakukan observasi awal dan eksplorasi konsep dasar ${materi}. Fokus pada pengumpulan informasi dan identifikasi kata kunci.`;
+                if (pedagogy.includes("PjBL")) kegiatanInti = `Murid diperkenalkan dengan pertanyaan esensial terkait ${materi}. Murid membentuk kelompok dan menyusun <strong>Perencanaan Proyek</strong> (jadwal dan alat bahan).`;
+                else if (pedagogy.includes("Problem")) kegiatanInti = `Murid melakukan <strong>Orientasi Masalah</strong>. Guru menyajikan fenomena tentang ${materi}, murid merumuskan pertanyaan masalah yang akan diselesaikan.`;
+                else kegiatanInti = `Murid melakukan observasi awal dan eksplorasi konsep dasar ${materi}. Fokus pada pengumpulan informasi dan identifikasi kata kunci.`;
             } 
             else if (meeting == total) {
                 focus = "Presentasi Hasil & Evaluasi Akhir";
                 tujuanPertemuan = "Mengkomunikasikan hasil belajar dan evaluasi menyeluruh.";
-                if (pedagogy.includes("PjBL")) kegiatanInti = `Siswa melakukan <strong>Gelar Karya</strong> produk ${materi}. Kelompok lain memberikan apresiasi dan masukan. Guru melakukan evaluasi terhadap produk.`;
-                else if (pedagogy.includes("Problem")) kegiatanInti = `Siswa menyajikan laporan hasil pemecahan masalah ${materi}. Melakukan analisis dan evaluasi terhadap proses pemecahan masalah yang dilakukan.`;
-                else kegiatanInti = `Siswa melakukan reviu materi ${materi}, mengerjakan asesmen sumatif, dan melakukan refleksi mendalam tentang manfaat materi ini.`;
+                if (pedagogy.includes("PjBL")) kegiatanInti = `Murid melakukan <strong>Gelar Karya</strong> produk ${materi}. Kelompok lain memberikan apresiasi dan masukan. Guru melakukan evaluasi terhadap produk.`;
+                else if (pedagogy.includes("Problem")) kegiatanInti = `Murid menyajikan laporan hasil pemecahan masalah ${materi}. Melakukan analisis dan evaluasi terhadap proses pemecahan masalah yang dilakukan.`;
+                else kegiatanInti = `Murid melakukan reviu materi ${materi}, mengerjakan asesmen sumatif, dan melakukan refleksi mendalam tentang manfaat materi ini.`;
             } 
             else {
                 focus = "Pendalaman Materi & Proses Berkarya";
                 tujuanPertemuan = "Mengembangkan keterampilan dan analisis mendalam.";
-                if (pedagogy.includes("PjBL")) kegiatanInti = `Siswa melaksanakan <strong>Pembuatan Proyek</strong> ${materi} sesuai jadwal. Guru memonitor kemajuan dan membimbing penyelesaian kendala teknis.`;
-                else if (pedagogy.includes("Problem")) kegiatanInti = `Siswa melakukan <strong>Penyelidikan Mandiri/Kelompok</strong>. Mengumpulkan data valid untuk menjawab masalah ${materi} yang telah dirumuskan.`;
-                else kegiatanInti = `Siswa melakukan elaborasi pemahaman ${materi} melalui studi kasus, praktik, atau latihan soal terbimbing untuk menguatkan konsep.`;
+                if (pedagogy.includes("PjBL")) kegiatanInti = `Murid melaksanakan <strong>Pembuatan Proyek</strong> ${materi} sesuai jadwal. Guru memonitor kemajuan dan membimbing penyelesaian kendala teknis.`;
+                else if (pedagogy.includes("Problem")) kegiatanInti = `Murid melakukan <strong>Penyelidikan Mandiri/Kelompok</strong>. Mengumpulkan data valid untuk menjawab masalah ${materi} yang telah dirumuskan.`;
+                else kegiatanInti = `Murid melakukan elaborasi pemahaman ${materi} melalui studi kasus, praktik, atau latihan soal terbimbing untuk menguatkan konsep.`;
             }
 
             return `
             <div style="margin-bottom: 5px;"><strong>A. Kegiatan Awal (10 Menit)</strong></div>
-            <div style="text-align: justify; margin-bottom: 8px;">Guru menyapa dan memotivasi siswa. Mengaitkan materi dengan pertemuan sebelumnya. Menyampaikan fokus: <em>${tujuanPertemuan}</em>.</div>
+            <div style="text-align: justify; margin-bottom: 8px;">Guru menyapa dan memotivasi murid. Mengaitkan materi dengan pertemuan sebelumnya. Menyampaikan fokus: <em>${tujuanPertemuan}</em>.</div>
             
             <div style="margin-bottom: 5px;"><strong>B. Kegiatan Inti (${focus})</strong></div>
             <div style="text-align: justify; margin-bottom: 8px;">(Model: ${pedagogy})<br>${kegiatanInti}</div>
             
             <div style="margin-bottom: 5px;"><strong>C. Kegiatan Penutup (10 Menit)</strong></div>
-            <div style="text-align: justify;">Siswa menyimpulkan poin kunci pertemuan ini. Guru memberikan apresiasi dan preview materi pertemuan selanjutnya. Doa penutup.</div>
+            <div style="text-align: justify;">Murid menyimpulkan poin kunci pertemuan ini. Guru memberikan apresiasi dan preview materi pertemuan selanjutnya. Doa penutup.</div>
             `;
         }
 
         function generateAssessment(materi) {
             return {
                 awal: `<strong>Diagnostik Kognitif:</strong><br>1. Apa yang kamu ketahui tentang ${materi}?<br>2. Sebutkan satu contoh ${materi} di sekitarmu!`,
-                proses: `<strong>Formatif (Observasi):</strong><br>Mengamati keterlibatan siswa saat diskusi, kemampuan mengajukan pertanyaan kritis, dan kerjasama tim dalam menyelesaikan tantangan ${materi}.`,
+                proses: `<strong>Formatif (Observasi):</strong><br>Mengamati keterlibatan murid saat diskusi, kemampuan mengajukan pertanyaan kritis, dan kerjasama tim dalam menyelesaikan tantangan ${materi}.`,
                 akhir: `<strong>Sumatif (Tes/Produk):</strong><br>1. Buatlah kesimpulan tentang prinsip kerja ${materi}!<br>2. Selesaikan studi kasus berikut: [Kasus relevan dengan ${materi}].`
             };
         }
 
-        // --- NEW: GENERATE LKPD & LINKS HTML STRUCTURE ---
+        // --- NEW: GENERATE LKM (LEMBAR KERJA MURID) & LINKS HTML STRUCTURE ---
         function generateAttachments(materi, mapel, kelas, pedagogy, jenjang) {
             let langkahKerja = "";
             
@@ -508,21 +521,21 @@
                 <div class="lkpd-area" style="height:40px;"></div>`;
             }
 
-            // Struktur LKPD Full
+            // Struktur LKM Full
             const lkpdHTML = `
             <div class="lkpd-box" style="page-break-inside:avoid;">
                 <div style="text-align:center; border-bottom:2px solid black; margin-bottom:10px; padding-bottom:5px;">
-                    <h3 style="margin:0;">LEMBAR KERJA PESERTA DIDIK (LKPD)</h3>
+                    <h3 style="margin:0;">LEMBAR KERJA MURID (LKM)</h3>
                     <p style="margin:0;">Mata Pelajaran: ${mapel} | Kelas: ${kelas}</p>
                 </div>
                 <div>
-                    <p><strong>Nama Kelompok/Siswa:</strong> ........................................................</p>
+                    <p><strong>Nama Kelompok/Murid:</strong> ........................................................</p>
                     <p><strong>Topik Materi:</strong> ${materi}</p>
                 </div>
                 <hr style="margin:10px 0;">
                 <div>
                     <strong>TUJUAN KEGIATAN:</strong><br>
-                    Peserta didik mampu memahami dan menerapkan konsep ${materi} melalui aktivitas ${pedagogy}.
+                    Murid mampu memahami dan menerapkan konsep ${materi} melalui aktivitas ${pedagogy}.
                 </div>
                 <div style="margin-top:10px;">
                     <strong>LANGKAH KERJA:</strong>
@@ -612,12 +625,14 @@
             const mainPedagogy = document.getElementById('pedagogy-1').value; 
             const lampiran = generateAttachments(d.materi, d.mapel, d.kelas, mainPedagogy, d.jenjang);
 
-            // Generate Meetings & TPs
+            // Generate Meetings & TPs & Pedagogical Descriptions
             let pertemuanContent = "";
             let tpContent = "<ul style='margin-left:15px; list-style:disc;'>";
+            let uniquePedagogies = new Set();
             
             for (let i = 1; i <= d.jmlPertemuan; i++) {
                 const ped = document.getElementById(`pedagogy-${i}`).value;
+                uniquePedagogies.add(ped);
                 tpContent += `<li><strong>Pertemuan ${i}:</strong> Mencapai pemahaman spesifik dari TP umum melalui aktivitas ${ped}.</li>`;
                 
                 // Pass 'i' and 'd.jmlPertemuan' to generate distinct content
@@ -628,6 +643,13 @@
                 </div>`;
             }
             tpContent += "</ul>";
+
+            // Generate Pedagogical Descriptions for B.6
+            let pedagogiDesc = "<ul style='margin-left:15px; list-style:disc;'>";
+            uniquePedagogies.forEach(ped => {
+                pedagogiDesc += `<li><strong>${ped}:</strong> ${getPedagogyDescription(ped)}</li>`;
+            });
+            pedagogiDesc += "</ul>";
 
             // Dimensi Checkboxes HTML Generator
             const allDimensions = [
@@ -688,7 +710,7 @@
                     <tr><td><strong>3. Tujuan Pembelajaran</strong></td><td>${d.tp}<br>${tpContent}</td></tr>
                     <tr><td><strong>4. KKTP</strong></td><td>${kktp}</td></tr>
                     <tr><td><strong>5. Topik Pembelajaran</strong></td><td>${d.materi}</td></tr>
-                    <tr><td><strong>6. Praktik Pedagogis</strong></td><td>(Lihat rincian di Pengalaman Belajar)</td></tr>
+                    <tr><td><strong>6. Praktik Pedagogis</strong></td><td>${pedagogiDesc}</td></tr>
                     <tr><td><strong>7. Pemanfaatan Digital</strong></td><td>${digital}</td></tr>
                 </table>
 
@@ -708,7 +730,7 @@
                 <!-- E. LAMPIRAN -->
                 <div class="section-title">E. LAMPIRAN-LAMPIRAN</div>
                 <div>
-                    <div class="sub-section-title">1. Lembar Kerja Peserta Didik (LKPD)</div>
+                    <div class="sub-section-title">1. Lembar Kerja Murid (LKM)</div>
                     ${lampiran.lkpd}
                     
                     <div class="sub-section-title" style="margin-top:15px;">2. Glosarium</div>
