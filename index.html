@@ -421,9 +421,28 @@
 
         function generateAssessment(materi, pedagogy) {
             return {
-                awal: "Asesmen Diagnostik Kognitif (Kuis Singkat) & Non-Kognitif (Tanya Jawab Minat).",
-                proses: `Observasi kinerja saat kegiatan ${pedagogy} dan penilaian sikap (Profil Pelajar Pancasila).`,
-                akhir: "Tes Tertulis (Pilihan Ganda/Esai) dan Penilaian Produk/Portofolio."
+                awal: `
+                    <strong>Pertanyaan Pemantik:</strong>
+                    <ol style="margin-left: 15px; margin-top: 5px;">
+                        <li>Apa yang terlintas di pikiranmu saat mendengar tentang ${materi}?</li>
+                        <li>Pernahkah kamu menemukan penerapan ${materi} dalam kehidupan sehari-hari? Berikan contohnya!</li>
+                        <li>Menurutmu, seberapa penting kita mempelajari ${materi}?</li>
+                    </ol>`,
+                proses: `
+                    <strong>Lembar Observasi (${pedagogy}):</strong>
+                    <ul style="margin-left: 15px; margin-top: 5px; list-style-type: disc;">
+                        <li>Keaktifan siswa dalam diskusi tentang ${materi}.</li>
+                        <li>Kemampuan siswa menghubungkan konsep ${materi} dengan masalah nyata.</li>
+                        <li>Kerjasama dalam kelompok saat menyelesaikan tantangan belajar.</li>
+                    </ul>`,
+                akhir: `
+                    <strong>Soal Evaluasi (HOTS):</strong>
+                    <ol style="margin-left: 15px; margin-top: 5px;">
+                        <li>Jelaskan konsep dasar ${materi} menggunakan bahasamu sendiri!</li>
+                        <li>Analisislah bagaimana ${materi} dapat mempengaruhi fenomena di lingkungan sekitarmu!</li>
+                        <li>Berikan satu contoh studi kasus / masalah yang berkaitan dengan ${materi} dan tawarkan solusinya!</li>
+                        <li>Buatlah kesimpulan singkat mengenai poin penting dari ${materi}!</li>
+                    </ol>`
             };
         }
 
@@ -586,9 +605,9 @@
                         <th width="33%">Akhir (Sumatif)</th>
                     </tr>
                     <tr>
-                        <td>${ai.asesmen.awal}</td>
-                        <td>${ai.asesmen.proses}</td>
-                        <td>${ai.asesmen.akhir}</td>
+                        <td style="vertical-align: top;">${ai.asesmen.awal}</td>
+                        <td style="vertical-align: top;">${ai.asesmen.proses}</td>
+                        <td style="vertical-align: top;">${ai.asesmen.akhir}</td>
                     </tr>
                 </table>
 
