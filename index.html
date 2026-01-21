@@ -28,6 +28,7 @@
             box-sizing: border-box;
         }
 
+        /* Tabel Utama dengan Border */
         .doc-table {
             width: 100%;
             border-collapse: collapse;
@@ -43,6 +44,18 @@
             background-color: #E0E0E0;
             font-weight: bold;
             text-align: center;
+        }
+
+        /* Tabel Layout (Tanpa Border) untuk Dimensi */
+        .layout-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+        }
+        .layout-table td {
+            border: none;
+            padding: 2px;
+            vertical-align: middle;
         }
         
         .section-title {
@@ -93,19 +106,13 @@
             vertical-align: top;
         }
         .ttd-space {
-            height: 80px; /* Jarak tanda tangan 3-4 enter */
+            height: 70px;
         }
 
-        /* Style khusus LKM */
         .lkpd-box {
             border: 1px solid black;
             padding: 10px;
             margin-top: 5px;
-        }
-        .lkpd-input {
-            border-bottom: 1px dotted black;
-            display: inline-block;
-            width: 60%;
         }
         .lkpd-area {
             border: 1px solid #999;
@@ -169,7 +176,6 @@
                 width: 100%;
                 padding: 0;
             }
-            /* Ensure links are printed in blue/underlined if color printing is on, or clearly visible */
             a {
                 text-decoration: underline !important;
                 color: blue !important;
@@ -270,6 +276,7 @@
                         
                         <label class="block font-medium text-gray-600 text-xs">Tujuan Pembelajaran (TP) Umum</label>
                         <textarea id="tp" rows="3" class="w-full rounded border-gray-300 p-2" placeholder="Tujuan besar materi ini..." required></textarea>
+                        <p class="text-[10px] text-gray-500 italic">*Generator akan otomatis memecah TP Umum ini menjadi TP per pertemuan.</p>
                         
                         <label class="block font-medium text-gray-600 text-xs mb-1">Dimensi Profil Lulusan (Pilih 8 Dimensi)</label>
                         <div class="grid grid-cols-2 gap-1 text-xs">
@@ -375,28 +382,36 @@
         }
         updatePedagogyInputs();
 
-        // --- LOGIKA GENERATOR AI (DEEP LEARNING) ---
-        
+        // --- LOGIKA GENERATOR AI ---
         function generateStudentID(jenjang) {
-            let karakteristik = "", kesiapan = "";
+            let pengetahuan, minat, latar, kebutuhan;
+            
             if (jenjang === 'SD') {
-                karakteristik = "Fase operasional konkret. Murid aktif bergerak, memiliki rasa ingin tahu tinggi, dan belajar efektif melalui pengalaman sensorik langsung.";
-                kesiapan = "Sebagian besar murid membutuhkan bimbingan konkret dalam memahami konsep abstrak. Kesiapan belajar bervariasi dari tahap pengenalan hingga pemahaman dasar.";
+                pengetahuan = "Mayoritas murid memiliki pemahaman konsep dasar yang bersifat konkret. Membutuhkan jembatan untuk memahami konsep abstrak.";
+                minat = "Tinggi terhadap aktivitas yang melibatkan gerak, visual menarik, dan permainan (gamifikasi).";
+                latar = "Latar belakang keluarga beragam, dukungan orang tua sangat berpengaruh. Ketergantungan pada guru masih tinggi.";
+                kebutuhan = "Membutuhkan pembelajaran yang terstruktur, instruksi yang jelas, dan penguatan positif segera.";
             } else if (jenjang === 'SMP') {
-                karakteristik = "Fase transisi menuju berpikir abstrak. Murid mulai kritis, emosi fluktuatif, dan orientasi sosial pada teman sebaya sangat kuat.";
-                kesiapan = "Murid mampu melakukan tugas mandiri namun membutuhkan struktur (scaffolding). Minat belajar dipengaruhi oleh relevansi materi dengan kehidupan mereka.";
+                pengetahuan = "Mulai mampu berpikir logis untuk masalah konkret dan menuju abstrak. Memiliki pengetahuan awal yang bervariasi.";
+                minat = "Tertarik pada isu-isu sosial, teknologi, dan interaksi teman sebaya. Menyukai tantangan yang relevan dengan dunia mereka.";
+                latar = "Berada pada masa transisi remaja, emosi fluktuatif. Pengaruh teman sebaya (peer group) sangat kuat.";
+                kebutuhan = "Membutuhkan ruang untuk eksplorasi diri, validasi, dan diskusi kelompok yang terarah (scaffolding).";
             } else {
-                karakteristik = "Berpikir abstrak dan logis. Murid mampu merencanakan masa depan, mandiri, dan memiliki preferensi gaya belajar yang spesifik.";
-                kesiapan = "Murid memiliki kesiapan tinggi untuk kolaborasi kompleks dan pemecahan masalah (HOTS). Mampu melakukan regulasi diri dalam belajar.";
+                pengetahuan = "Mampu berpikir abstrak, kritis, dan analitis. Memiliki pengetahuan prasyarat yang lebih kompleks.";
+                minat = "Berorientasi pada karir masa depan, hobi spesifik, dan isu-isu global atau aktual.";
+                latar = "Mulai mandiri dalam mengambil keputusan. Memiliki identitas diri yang mulai terbentuk.";
+                kebutuhan = "Membutuhkan otonomi dalam belajar, tantangan pemecahan masalah nyata (HOTS), dan relevansi materi dengan karir.";
             }
-            return { karakteristik, kesiapan };
+            return { pengetahuan, minat, latar, kebutuhan };
         }
 
         function generateMaterialID(materi) {
             return {
-                jenis: "Pengetahuan Konseptual dan Prosedural",
-                relevansi: `Materi ${materi} sangat relevan untuk membangun kompetensi dasar dan memecahkan masalah sehari-hari.`,
-                tingkat: "Medium (Disesuaikan dengan scaffolding)"
+                jenis: `Faktual (fakta-fakta dasar tentang ${materi}), Konseptual (prinsip dan definisi), serta Prosedural (langkah-langkah atau cara kerja).`,
+                relevansi: `Materi ${materi} sangat relevan untuk memecahkan masalah sehari-hari dan menjadi dasar kompetensi untuk jenjang berikutnya.`,
+                kesulitan: "Tingkat kesulitan menengah (Medium). Konsep abstrak memerlukan visualisasi atau analogi konkret.",
+                struktur: "Disusun secara hierarkis: mulai dari definisi, karakteristik, hingga analisis dan aplikasi dalam kasus nyata.",
+                integrasi: "Mengintegrasikan nilai-nilai Profil Pelajar Pancasila, terutama Bernalar Kritis dan Gotong Royong dalam penyelesaian masalah."
             };
         }
 
@@ -421,7 +436,6 @@
             return "Platform Quizizz/Kahoot untuk asesmen formatif, Video Youtube untuk apersepsi, dan Canva/Google Slides untuk presentasi hasil karya.";
         }
 
-        // --- NEW: Uraian Praktik Pedagogis ---
         function getPedagogyDescription(model) {
             const descriptions = {
                 "Inkuiri-Discovery Learning": "Pembelajaran yang menekankan pada proses penemuan konsep secara mandiri oleh murid melalui observasi, eksperimen, dan pembuktian untuk membangun pemahaman yang mendalam.",
@@ -434,7 +448,31 @@
             return descriptions[model] || "Pendekatan pembelajaran aktif yang berpusat pada murid.";
         }
 
-        // --- LOGIKA AKTIVITAS BERJENJANG ---
+        // --- NEW: Generate TP Spesifik per Pertemuan ---
+        function generateSpecificTP(materi, pedagogy, meeting, total) {
+            let verb = "";
+            let context = "";
+
+            if (total === 1) {
+                 verb = "memahami, menerapkan, dan mengevaluasi";
+                 context = "dalam satu rangkaian aktivitas terpadu";
+            } else if (meeting === 1) {
+                 verb = "mengidentifikasi dan menjelaskan";
+                 context = "melalui pengamatan dan diskusi awal";
+                 if (pedagogy.includes("PjBL")) verb = "merancang perencanaan proyek terkait";
+                 if (pedagogy.includes("Problem")) verb = "mengidentifikasi masalah utama terkait";
+            } else if (meeting === total) {
+                 verb = "mengevaluasi dan menyimpulkan";
+                 context = "melalui presentasi hasil karya dan refleksi";
+            } else {
+                 verb = "menerapkan dan menganalisis";
+                 context = "melalui praktik/penyelidikan mendalam";
+                 if (pedagogy.includes("PjBL")) verb = "melaksanakan pembuatan produk";
+            }
+
+            return `Murid mampu <strong>${verb}</strong> konsep/prosedur ${materi} ${context} secara kolaboratif.`;
+        }
+
         function generateActivities(pedagogy, materi, meeting, total) {
             let focus = "";
             let kegiatanInti = "";
@@ -470,14 +508,14 @@
             }
 
             return `
-            <div style="margin-bottom: 5px;"><strong>A. Kegiatan Awal (10 Menit)</strong></div>
-            <div style="text-align: justify; margin-bottom: 8px;">Guru menyapa dan memotivasi murid. Mengaitkan materi dengan pertemuan sebelumnya. Menyampaikan fokus: <em>${tujuanPertemuan}</em>.</div>
+            <div style="margin-bottom: 5px;"><strong>A. Kegiatan Awal (10 Menit) - <em>Berkesadaran (Mindfulness)</em></strong></div>
+            <div style="text-align: justify; margin-bottom: 8px;">Guru menyapa dan memotivasi murid. Mengaitkan materi dengan pertemuan sebelumnya. Menyampaikan tujuan: <em>${tujuanPertemuan}</em>. Melakukan teknik "Stop" sejenak untuk melatih fokus.</div>
             
-            <div style="margin-bottom: 5px;"><strong>B. Kegiatan Inti (${focus})</strong></div>
-            <div style="text-align: justify; margin-bottom: 8px;">(Model: ${pedagogy})<br>${kegiatanInti}</div>
+            <div style="margin-bottom: 5px;"><strong>B. Kegiatan Inti (${focus}) - <em>Bermakna (Meaningfulness)</em></strong></div>
+            <div style="text-align: justify; margin-bottom: 8px;">(Sintaks Model: ${pedagogy})<br>${kegiatanInti}</div>
             
-            <div style="margin-bottom: 5px;"><strong>C. Kegiatan Penutup (10 Menit)</strong></div>
-            <div style="text-align: justify;">Murid menyimpulkan poin kunci pertemuan ini. Guru memberikan apresiasi dan preview materi pertemuan selanjutnya. Doa penutup.</div>
+            <div style="margin-bottom: 5px;"><strong>C. Kegiatan Penutup (10 Menit) - <em>Menggembirakan (Joyfulness)</em></strong></div>
+            <div style="text-align: justify;">Murid menyimpulkan poin kunci pertemuan ini. Guru memberikan apresiasi dan umpan balik positif. Melakukan refleksi perasaan: "Bagaimana perasaan kalian setelah belajar hari ini?". Doa penutup.</div>
             `;
         }
 
@@ -489,7 +527,6 @@
             };
         }
 
-        // --- NEW: GENERATE LKM (LEMBAR KERJA MURID) & LINKS HTML STRUCTURE ---
         function generateAttachments(materi, mapel, kelas, pedagogy, jenjang) {
             let langkahKerja = "";
             
@@ -521,7 +558,6 @@
                 <div class="lkpd-area" style="height:40px;"></div>`;
             }
 
-            // Struktur LKM Full
             const lkpdHTML = `
             <div class="lkpd-box" style="page-break-inside:avoid;">
                 <div style="text-align:center; border-bottom:2px solid black; margin-bottom:10px; padding-bottom:5px;">
@@ -547,7 +583,6 @@
                 </div>
             </div>`;
 
-            // Smart Links Generation
             const query = encodeURIComponent(`${materi} ${mapel} ${jenjang}`);
             const links = `
                 <br><br><strong>Referensi Digital & Video:</strong>
@@ -608,62 +643,74 @@
                 nipKepsek: document.getElementById('nipKepsek').value || "-"
             };
 
-            // Get selected dimensions
             const checkboxes = document.querySelectorAll('input[name="dimensi"]:checked');
             let selectedDimensi = [];
             checkboxes.forEach((cb) => { selectedDimensi.push(cb.value); });
             
-            // Logic Generators
             const murid = generateStudentID(d.jenjang);
             const mat = generateMaterialID(d.materi);
             const kktp = generateKKTP(d.materi);
             const lintas = generateLintasDisiplin(d.mapel);
             const digital = generateDigital(d.tp);
             const asesmen = generateAssessment(d.materi);
-            // Pass more data to attachments for specific LKPD
-            // Use the pedagogy of the first meeting as the main one for the sample LKPD
             const mainPedagogy = document.getElementById('pedagogy-1').value; 
             const lampiran = generateAttachments(d.materi, d.mapel, d.kelas, mainPedagogy, d.jenjang);
 
-            // Generate Meetings & TPs & Pedagogical Descriptions
             let pertemuanContent = "";
             let tpContent = "<ul style='margin-left:15px; list-style:disc;'>";
+            // Auto-generated detailed TP list
+            let tpDetailed = "<div style='margin-top:5px;'><ol style='margin-left:15px; list-style:decimal;'>";
             let uniquePedagogies = new Set();
             
             for (let i = 1; i <= d.jmlPertemuan; i++) {
                 const ped = document.getElementById(`pedagogy-${i}`).value;
                 uniquePedagogies.add(ped);
-                tpContent += `<li><strong>Pertemuan ${i}:</strong> Mencapai pemahaman spesifik dari TP umum melalui aktivitas ${ped}.</li>`;
                 
-                // Pass 'i' and 'd.jmlPertemuan' to generate distinct content
+                // TP Logic
+                const specificTP = generateSpecificTP(d.materi, ped, i, d.jmlPertemuan);
+                tpDetailed += `<li style="margin-bottom:3px;"><strong>Pertemuan ${i}:</strong> ${specificTP}</li>`;
+
+                // Content Logic
                 pertemuanContent += `
                 <div style="border:1px solid black; padding:10px; margin-bottom:10px; page-break-inside:avoid;">
                     <div style="font-weight:bold; border-bottom:1px solid #ccc; margin-bottom:5px;">Pertemuan Ke-${i} (${ped})</div>
                     ${generateActivities(ped, d.materi, i, d.jmlPertemuan)}
                 </div>`;
             }
-            tpContent += "</ul>";
+            tpDetailed += "</ol></div>";
 
-            // Generate Pedagogical Descriptions for B.6
             let pedagogiDesc = "<ul style='margin-left:15px; list-style:disc;'>";
             uniquePedagogies.forEach(ped => {
                 pedagogiDesc += `<li><strong>${ped}:</strong> ${getPedagogyDescription(ped)}</li>`;
             });
             pedagogiDesc += "</ul>";
 
-            // Dimensi Checkboxes HTML Generator
+            // GENERATE DIMENSION TABLE (Word Friendly)
             const allDimensions = [
                 "Keimanan dan Ketakwaan", "Kewargaan", "Penalaran Kritis", "Kreativitas", 
                 "Kolaborasi", "Kemandirian", "Kesehatan", "Komunikasi"
             ];
-            let dimensiHTML = "<div style='display:grid; grid-template-columns: 1fr 1fr; gap:5px;'>";
-            allDimensions.forEach(dim => {
-                const isChecked = selectedDimensi.includes(dim) ? "checked" : "";
-                dimensiHTML += `<div><span class="print-checkbox ${isChecked}"></span> ${dim}</div>`;
-            });
-            dimensiHTML += "</div>";
+            
+            let dimensiHTML = '<table class="layout-table">';
+            for (let i = 0; i < allDimensions.length; i += 2) {
+                dimensiHTML += '<tr>';
+                
+                let dim1 = allDimensions[i];
+                let check1 = selectedDimensi.includes(dim1) ? '&#9745;' : '&#9744;';
+                dimensiHTML += `<td>${check1} ${dim1}</td>`;
 
-            // --- HTML TEMPLATE (A-E STRUCTURE) ---
+                if (i + 1 < allDimensions.length) {
+                    let dim2 = allDimensions[i+1];
+                    let check2 = selectedDimensi.includes(dim2) ? '&#9745;' : '&#9744;';
+                    dimensiHTML += `<td>${check2} ${dim2}</td>`;
+                } else {
+                     dimensiHTML += `<td></td>`;
+                }
+                
+                dimensiHTML += '</tr>';
+            }
+            dimensiHTML += '</table>';
+
             const docHTML = `
             <div class="a4-page">
                 <div class="main-header">
@@ -671,7 +718,6 @@
                     <h2>${d.sekolah}</h2>
                 </div>
 
-                <!-- IDENTITAS UMUM -->
                 <div class="section-title">IDENTITAS UMUM</div>
                 <table class="doc-table">
                     <tr><td width="25%"><strong>Nama Guru</strong></td><td>${d.guru}</td></tr>
@@ -681,45 +727,45 @@
                     <tr><td><strong>Alokasi Waktu</strong></td><td>${d.durasi} (${d.jmlPertemuan} Pertemuan)</td></tr>
                 </table>
 
-                <!-- A. IDENTIFIKASI -->
                 <div class="section-title">A. IDENTIFIKASI</div>
                 
-                <div class="sub-section-title">1. Identifikasi Murid</div>
+                <div class="sub-section-title">1. Identifikasi Murid (Kesiapan Belajar)</div>
                 <table class="doc-table">
-                    <tr><td width="30%"><strong>Karakteristik Umum</strong></td><td>${murid.karakteristik}</td></tr>
-                    <tr><td><strong>Kesiapan Belajar</strong></td><td>${murid.kesiapan}</td></tr>
+                    <tr><td width="30%"><strong>Pengetahuan Awal</strong></td><td>${murid.pengetahuan}</td></tr>
+                    <tr><td><strong>Minat & Motivasi</strong></td><td>${murid.minat}</td></tr>
+                    <tr><td><strong>Latar Belakang</strong></td><td>${murid.latar}</td></tr>
+                    <tr><td><strong>Kebutuhan Belajar</strong></td><td>${murid.kebutuhan}</td></tr>
                 </table>
 
                 <div class="sub-section-title">2. Identifikasi Materi Pelajaran</div>
                 <table class="doc-table">
                     <tr><td width="30%"><strong>Jenis Pengetahuan</strong></td><td>${mat.jenis}</td></tr>
-                    <tr><td><strong>Relevansi</strong></td><td>${mat.relevansi}</td></tr>
-                    <tr><td><strong>Tingkat Kesulitan</strong></td><td>${mat.tingkat}</td></tr>
+                    <tr><td><strong>Relevansi Kehidupan</strong></td><td>${mat.relevansi}</td></tr>
+                    <tr><td><strong>Tingkat Kesulitan</strong></td><td>${mat.kesulitan}</td></tr>
+                    <tr><td><strong>Struktur Materi</strong></td><td>${mat.struktur}</td></tr>
+                    <tr><td><strong>Integrasi Nilai</strong></td><td>${mat.integrasi}</td></tr>
                 </table>
 
                 <div class="sub-section-title">3. Dimensi Profil Lulusan</div>
-                <div style="border:1px solid black; padding:10px; margin-bottom:10px;">
+                <div style="border:1px solid black; padding:5px; margin-bottom:10px;">
                     ${dimensiHTML}
                 </div>
 
-                <!-- B. DESAIN PEMBELAJARAN -->
                 <div class="section-title">B. DESAIN PEMBELAJARAN</div>
                 <table class="doc-table">
                     <tr><td width="30%"><strong>1. Capaian Pembelajaran</strong></td><td>${d.cp}</td></tr>
                     <tr><td><strong>2. Lintas Disiplin Ilmu</strong></td><td>${lintas}</td></tr>
-                    <tr><td><strong>3. Tujuan Pembelajaran</strong></td><td>${d.tp}<br>${tpContent}</td></tr>
+                    <tr><td><strong>3. Tujuan Pembelajaran</strong></td><td><strong>TP Umum:</strong> ${d.tp}<br><strong>Rincian TP per Pertemuan:</strong>${tpDetailed}</td></tr>
                     <tr><td><strong>4. KKTP</strong></td><td>${kktp}</td></tr>
                     <tr><td><strong>5. Topik Pembelajaran</strong></td><td>${d.materi}</td></tr>
                     <tr><td><strong>6. Praktik Pedagogis</strong></td><td>${pedagogiDesc}</td></tr>
                     <tr><td><strong>7. Pemanfaatan Digital</strong></td><td>${digital}</td></tr>
                 </table>
 
-                <!-- C. PENGALAMAN BELAJAR -->
                 <div class="section-title">C. PENGALAMAN BELAJAR</div>
                 <p style="font-size:10pt; font-style:italic; margin-bottom:5px;">Langkah pembelajaran berkelanjutan sesuai TP dan materi.</p>
                 ${pertemuanContent}
 
-                <!-- D. ASESMEN -->
                 <div class="section-title">D. ASESMEN PEMBELAJARAN</div>
                 <table class="doc-table">
                     <tr><td><strong>1. Asesmen Awal</strong></td><td>${asesmen.awal}</td></tr>
@@ -727,7 +773,6 @@
                     <tr><td><strong>3. Asesmen Akhir</strong></td><td>${asesmen.akhir}</td></tr>
                 </table>
 
-                <!-- E. LAMPIRAN -->
                 <div class="section-title">E. LAMPIRAN-LAMPIRAN</div>
                 <div>
                     <div class="sub-section-title">1. Lembar Kerja Murid (LKM)</div>
@@ -740,7 +785,6 @@
                     <div style="border:1px solid black; padding:5px;">${lampiran.bacaan}</div>
                 </div>
 
-                <!-- TTD -->
                 <table class="signature-table">
                     <tr>
                         <td width="40%">Mengetahui,<br>Kepala Sekolah<div class="ttd-space"></div><strong><u>${d.kepsek}</u></strong><br>NIP. ${d.nipKepsek}</td>
@@ -754,14 +798,20 @@
             document.getElementById('previewArea').classList.remove('hidden');
         }
 
-        // Export Functions
         function downloadPDF() {
             const el = document.getElementById('previewArea');
             html2pdf().set({ margin:0, filename:`RPM_${document.getElementById('materi').value.substring(0,10)}.pdf`, image:{type:'jpeg',quality:0.98}, html2canvas:{scale:2}, jsPDF:{unit:'mm',format:'a4'} }).from(el).save();
         }
         function downloadWord() {
             const el = document.getElementById('previewArea');
-            const css = `<style>body{font-family:'Times New Roman';} table{border-collapse:collapse;width:100%;} td,th{border:1px solid black;padding:5px;} .lkpd-box{border:1px solid black;padding:10px;}</style>`;
+            const css = `<style>
+                body { font-family: 'Times New Roman', serif; }
+                table { border-collapse: collapse; width: 100%; }
+                td, th { border: 1px solid black; padding: 5px; }
+                .layout-table td { border: none !important; padding: 2px; }
+                .lkpd-box { border: 1px solid black; padding: 10px; }
+                .signature-table td { border: none !important; }
+            </style>`;
             const blob = new Blob(['\ufeff', `<html><head>${css}</head><body>${el.innerHTML}</body></html>`], {type:'application/msword'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a"); a.href=url; a.download=`RPM_${document.getElementById('materi').value.substring(0,10)}.doc`; a.click();
