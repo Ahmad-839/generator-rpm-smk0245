@@ -4,16 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator RPM - Rencana Pembelajaran Mendalam</title>
-    <!-- Tailwind CSS -->
+    
+    <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
+    <!-- FontAwesome (CDN) -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- html2pdf.js for PDF Generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
-        /* --- STYLE DOKUMEN PROFESIONAL (Untuk Preview & Cetak) --- */
-        
+        /* --- STYLE DOKUMEN (Untuk Preview & Cetak) --- */
         .a4-page {
             background: white;
             width: 210mm;
@@ -28,7 +26,6 @@
             box-sizing: border-box;
         }
 
-        /* Tabel Utama dengan Border */
         .doc-table {
             width: 100%;
             border-collapse: collapse;
@@ -46,7 +43,6 @@
             text-align: center;
         }
 
-        /* Tabel Layout (Tanpa Border) untuk Dimensi */
         .layout-table {
             width: 100%;
             border-collapse: collapse;
@@ -115,11 +111,6 @@
             padding: 10px;
             margin-top: 5px;
         }
-        .lkpd-input {
-            border-bottom: 1px dotted black;
-            display: inline-block;
-            width: 60%;
-        }
         .lkpd-area {
             border: 1px solid #999;
             height: 100px;
@@ -128,31 +119,13 @@
             display: block;
         }
 
-        /* Checkbox simulation for print */
-        .print-checkbox {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border: 1px solid black;
-            margin-right: 5px;
-            position: relative;
-            top: 2px;
-        }
-        .print-checkbox.checked::after {
-            content: "✓";
-            position: absolute;
-            top: -4px;
-            left: 1px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
         .doc-link {
             color: #0000EE;
             text-decoration: underline;
             cursor: pointer;
         }
 
+        /* Responsive Preview */
         @media (max-width: 768px) {
             .a4-page {
                 width: 100%;
@@ -161,6 +134,7 @@
             }
         }
 
+        /* Print Style */
         @media print {
             body * {
                 visibility: hidden;
@@ -189,7 +163,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen font-sans text-gray-800">
+<body class="bg-gray-100 min-h-screen font-sans text-gray-800 flex flex-col">
 
     <header class="bg-blue-800 text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -205,7 +179,7 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8 flex flex-col xl:flex-row gap-8">
+    <main class="container mx-auto px-4 py-8 flex flex-col xl:flex-row gap-8 flex-grow">
         
         <!-- KOLOM INPUT (Kiri) -->
         <div class="w-full xl:w-1/3 bg-white rounded-xl shadow-md p-6 h-fit border-t-4 border-blue-600">
@@ -343,6 +317,8 @@
         </div>
     </main>
 
+    <!-- Scripts moved to bottom for better loading performance -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         // Data Referensi
         const kelasOptions = {
@@ -389,11 +365,11 @@
             }
         }
         
-        // Initial setup for SMK
-        window.onload = function() {
+        // Initial setup using DOMContentLoaded for faster rendering
+        document.addEventListener('DOMContentLoaded', function() {
             updateKelas();
             updatePedagogyInputs();
-        };
+        });
 
         // --- LOGIKA GENERATOR AI ---
         function generateStudentID(jenjang) {
@@ -461,7 +437,6 @@
             return descriptions[model] || "Pendekatan pembelajaran aktif yang berpusat pada murid.";
         }
 
-        // --- NEW: Generate TP Spesifik per Pertemuan ---
         function generateSpecificTP(materi, pedagogy, meeting, total) {
             let verb = "";
             let context = "";
@@ -671,19 +646,16 @@
 
             let pertemuanContent = "";
             let tpContent = "<ul style='margin-left:15px; list-style:disc;'>";
-            // Auto-generated detailed TP list
-            let tpDetailed = "<div style='margin-top:5px;'><ol style='margin-left:15px; list-style:decimal;'>";
             let uniquePedagogies = new Set();
+            let tpDetailed = "<div style='margin-top:5px;'><ol style='margin-left:15px; list-style:decimal;'>";
             
             for (let i = 1; i <= d.jmlPertemuan; i++) {
                 const ped = document.getElementById(`pedagogy-${i}`).value;
                 uniquePedagogies.add(ped);
                 
-                // TP Logic
                 const specificTP = generateSpecificTP(d.materi, ped, i, d.jmlPertemuan);
                 tpDetailed += `<li style="margin-bottom:3px;"><strong>Pertemuan ${i}:</strong> ${specificTP}</li>`;
 
-                // Content Logic
                 pertemuanContent += `
                 <div style="border:1px solid black; padding:10px; margin-bottom:10px; page-break-inside:avoid;">
                     <div style="font-weight:bold; border-bottom:1px solid #ccc; margin-bottom:5px;">Pertemuan Ke-${i} (${ped})</div>
@@ -691,6 +663,7 @@
                 </div>`;
             }
             tpDetailed += "</ol></div>";
+            tpContent += "</ul>";
 
             let pedagogiDesc = "<ul style='margin-left:15px; list-style:disc;'>";
             uniquePedagogies.forEach(ped => {
@@ -698,7 +671,6 @@
             });
             pedagogiDesc += "</ul>";
 
-            // GENERATE DIMENSION TABLE (Word Friendly)
             const allDimensions = [
                 "Keimanan dan Ketakwaan", "Kewargaan", "Penalaran Kritis", "Kreativitas", 
                 "Kolaborasi", "Kemandirian", "Kesehatan", "Komunikasi"
