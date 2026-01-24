@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GENERATOR RPP SMK 02 ISLAM 45 AMBULU</title>
+    <title>Generator RPM - Rencana Pembelajaran Mendalam</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -89,9 +89,10 @@
             text-transform: uppercase;
         }
         .main-header h2 {
-            font-size: 12pt;
+            font-size: 14pt;
             font-weight: bold;
             margin: 5px 0 0 0;
+            text-transform: uppercase;
         }
 
         .signature-table {
@@ -113,6 +114,11 @@
             border: 1px solid black;
             padding: 10px;
             margin-top: 5px;
+        }
+        .lkpd-input {
+            border-bottom: 1px dotted black;
+            display: inline-block;
+            width: 60%;
         }
         .lkpd-area {
             border: 1px solid #999;
@@ -188,10 +194,6 @@
     <header class="bg-blue-800 text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-4">
-                <!-- LOGO APLIKASI -->
-                <!-- Pastikan file gambar bernama 'logo.png.jpg' ada di folder yang sama, atau ganti src dengan link gambar -->
-                <img src="logo.png.jpg" alt="Logo Sekolah" class="h-12 w-auto object-contain bg-white rounded-full p-1" onerror="this.src='https://via.placeholder.com/50?text=Logo'">
-                
                 <div>
                     <h1 class="text-lg md:text-xl font-bold leading-tight">GENERATOR RPP</h1>
                     <p class="text-xs md:text-sm opacity-90 font-medium">SMK 02 ISLAM 45 AMBULU</p>
@@ -725,8 +727,8 @@
             const docHTML = `
             <div class="a4-page">
                 <div class="main-header">
-                    <h1>GENERATOR RPP SMK 02 ISLAM 45 AMBULU</h1>
-                    <h2>${d.sekolah}</h2>
+                    <h1>RENCANA PEMBELAJARAN MENDALAM</h1>
+                    <h2>SMK 02 ISLAM 45 AMBULU</h2>
                 </div>
 
                 <div class="section-title">IDENTITAS UMUM</div>
